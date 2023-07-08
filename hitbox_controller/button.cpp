@@ -2,33 +2,38 @@
 
 Button::Button(int switchPin, int ledPin, uint8_t keyCode)
 {
-    _switchPin = switchPin;
-    _ledPin = ledPin;
-    _keyCode = keyCode;
+  _switchPin = switchPin;
+  _ledPin = ledPin;
+  _keyCode = keyCode;
 
-    pinMode(switchPin, INPUT);
-    pinMode(ledPin, OUTPUT);
+  pinMode(switchPin, INPUT);
+  pinMode(ledPin, OUTPUT);
 
-    updateState();
+  updateState();
 }
 
-void Button::updateState() {
+void Button::updateState()
+{
   _isPressed = digitalRead(_switchPin) == HIGH;
 }
 
-bool Button::isPressed() {
+bool Button::isPressed()
+{
   return _isPressed;
 }
 
-void Button::ledOff() {
+void Button::ledOff()
+{
   digitalWrite(_ledPin, LOW);
 }
 
-void Button::ledOn() {
+void Button::ledOn()
+{
   digitalWrite(_ledPin, HIGH);
 }
 
-void Button::processInput(bool isPushed) {
+void Button::processInput(bool isPushed)
+{
   if (isPushed)
   {
     ledOn();
