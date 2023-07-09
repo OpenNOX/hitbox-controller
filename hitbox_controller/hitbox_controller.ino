@@ -6,13 +6,6 @@
 // number of milliseconds to be considered idle
 #define IDLE_THRESHOLD_MS 50000
 
-// controller modes used to separate logic
-enum Modes
-{
-  Idle,
-  Input
-};
-
 // initialize buttons
 Button upButton(22, 23, 0x61);
 Button downButton(24, 25, 0x62);
@@ -30,63 +23,34 @@ Button extraAction1Button(46, 47, 0x6D);
 Button extraAction2Button(48, 49, 0x6E);
 Button extraAction3Button(50, 51, 0x6F);
 
-// initialize controller mode
-Modes mode = Modes::Input;
+// initialize array of pointers to all buttons
+Button *buttons[15] = {&upButton, &downButton, &leftButton, &rightButton, &bottomAction1Button, &bottomAction2Button, &bottomAction3Button, &bottomAction4Button, &topAction1Button, &topAction2Button, &topAction3Button, &topAction4Button, &extraAction1Button, &extraAction2Button, &extraAction3Button};
 
 // initialize run environment
 void setup()
 {
-  // setup serial communication
   Serial.begin(9600);
 
-  // initialize the built-in LED pin as an output
   pinMode(LED_BUILTIN, OUTPUT);
-
-  // turn built-in LED off
   digitalWrite(LED_BUILTIN, LOW);
+
+  randomSeed(analogRead(0));
 }
 
 // run main program loop
 void loop()
 {
-  updateButtonStates();
-  inputLoop();
-
-  if (mode == Modes::Idle || isIdle())
+  for (Button *button : buttons)
   {
-    mode = Modes::Idle;
+    button->updateState();
   }
 
-  if (mode == Modes::Idle)
+  inputLoop();
+
+  if (isIdle())
   {
     idleLoop();
   }
-}
-
-// initialize button states for loop
-void updateButtonStates()
-{
-  upButton.updateState();
-  downButton.updateState();
-  leftButton.updateState();
-  rightButton.updateState();
-  bottomAction1Button.updateState();
-  bottomAction2Button.updateState();
-  bottomAction3Button.updateState();
-  bottomAction4Button.updateState();
-  topAction1Button.updateState();
-  topAction2Button.updateState();
-  topAction3Button.updateState();
-  topAction4Button.updateState();
-  extraAction1Button.updateState();
-  extraAction2Button.updateState();
-  extraAction3Button.updateState();
-}
-
-// is any button being pressed?
-bool isAnyButtonPressed()
-{
-  return upButton.isPressed() || downButton.isPressed() || leftButton.isPressed() || rightButton.isPressed() || bottomAction1Button.isPressed() || bottomAction2Button.isPressed() || bottomAction3Button.isPressed() || bottomAction4Button.isPressed() || topAction1Button.isPressed() || topAction2Button.isPressed() || topAction3Button.isPressed() || topAction4Button.isPressed() || extraAction1Button.isPressed() || extraAction2Button.isPressed() || extraAction3Button.isPressed();
 }
 
 // initialize last input tick
@@ -95,13 +59,16 @@ unsigned long lastInputTick = 0;
 // has the idle threshold been reached?
 bool isIdle()
 {
-  if (isAnyButtonPressed())
+  for (Button *button : buttons)
   {
-    lastInputTick = millis();
-    return false;
+    if (button->isPressed())
+    {
+      lastInputTick = millis();
+      return false;
+    }
   }
 
-  return millis() - lastInputTick > IDLE_THRESHOLD_MS;
+  return millis() - lastInputTick >= IDLE_THRESHOLD_MS;
 }
 
 // run input controller mode loop
@@ -128,59 +95,18 @@ void inputLoop()
   extraAction3Button.processInput(extraAction3Button.isPressed());
 }
 
-// initialize array of pointers to all buttons
-const Button *buttons[15] = {&upButton, &downButton, &leftButton, &rightButton, &bottomAction1Button, &bottomAction2Button, &bottomAction3Button, &bottomAction4Button, &topAction1Button, &topAction2Button, &topAction3Button, &topAction4Button, &extraAction1Button, &extraAction2Button, &extraAction3Button};
-
-// initialize last frame time tick
-unsigned long lastFrameTime = 0;
-
-// bool animationState[15] = { false };
-bool animationState = false;
+// initialize last frame tick
+unsigned long lastFrameTick = 0;
 
 // run idle controller mode loop
 void idleLoop()
 {
-  if (millis() - lastFrameTime < ANIMATION_THRESHOLD_MS)
+  if (millis() - lastFrameTick <= ANIMATION_THRESHOLD_MS)
   {
     return;
   }
 
-  lastFrameTime = millis();
+  lastFrameTick = millis();
 
-  if (animationState)
-  {
-    upButton.ledOn();
-    downButton.ledOn();
-    leftButton.ledOn();
-    rightButton.ledOn();
-    bottomAction1Button.ledOn();
-    bottomAction2Button.ledOn();
-    bottomAction3Button.ledOn();
-    bottomAction4Button.ledOn();
-    topAction1Button.ledOn();
-    topAction2Button.ledOn();
-    topAction3Button.ledOn();
-    topAction4Button.ledOn();
-    extraAction1Button.ledOn();
-    extraAction2Button.ledOn();
-    extraAction3Button.ledOn();
-  }
-  else
-  {
-    upButton.ledOff();
-    downButton.ledOff();
-    leftButton.ledOff();
-    rightButton.ledOff();
-    bottomAction1Button.ledOff();
-    bottomAction2Button.ledOff();
-    bottomAction3Button.ledOff();
-    bottomAction4Button.ledOff();
-    topAction1Button.ledOff();
-    topAction2Button.ledOff();
-    topAction3Button.ledOff();
-    topAction4Button.ledOff();
-    extraAction1Button.ledOff();
-    extraAction2Button.ledOff();
-    extraAction3Button.ledOff();
-  }
+  buttons[random(15)]->toggleLed();
 }

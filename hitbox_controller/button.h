@@ -13,6 +13,7 @@ private:
     int _ledPin;
     uint8_t _keyCode;
     bool _isPressed;
+    bool _isLedOn;
 
 public:
     // initialize Button
@@ -23,6 +24,9 @@ public:
 
     // check if Button is physically pressed
     bool isPressed();
+
+    // toggle Button LED on / off
+    void toggleLed();
 
     // turn Button LED off
     void ledOff();

@@ -5,6 +5,7 @@ Button::Button(int switchPin, int ledPin, uint8_t keyCode)
   _switchPin = switchPin;
   _ledPin = ledPin;
   _keyCode = keyCode;
+  _isLedOn = false;
 
   pinMode(switchPin, INPUT);
   pinMode(ledPin, OUTPUT);
@@ -22,13 +23,24 @@ bool Button::isPressed()
   return _isPressed;
 }
 
+void Button::toggleLed()
+{
+  _isLedOn = !_isLedOn;
+
+  digitalWrite(_ledPin, _isLedOn ? HIGH : LOW);
+}
+
 void Button::ledOff()
 {
+  _isLedOn = false;
+
   digitalWrite(_ledPin, LOW);
 }
 
 void Button::ledOn()
 {
+  _isLedOn = true;
+
   digitalWrite(_ledPin, HIGH);
 }
 
