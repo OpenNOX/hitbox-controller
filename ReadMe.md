@@ -15,7 +15,7 @@
 1. On Windows, download and install [FLIP](https://www.microchip.com/en-us/development-tool/flip).
 1. Navigate to **Device** > **Select...** and ensure `ATmega16U2` is selected.
 1. Navigate to **Settings** > **Communication** > **USB** and click the **Open** button from the next window.
-1. Navigate to **File** > **Load HEX File...** and navigate to the local repository's `firmware` directory.
+1. Navigate to **File** > **Load HEX File...** and navigate to the local repository's `firmware` directory. ([Firmware Source](https://github.com/harlequin-tech/arduino-usb/tree/master/firmwares))
     - Select the `Arduino-keyboard.hex` file to flash the firmware to treat the Arduino as a keyboard.
     - Select the `Arduino-usbserial-atmega16u2-Mega2560-Rev3.hex` file to flash the firmware to reset the Arduino.  
     **Note:** This firmware is required to be running in order to update the sketch.
