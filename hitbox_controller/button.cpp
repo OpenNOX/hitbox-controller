@@ -7,7 +7,7 @@ Button::Button(int switchPin, int ledPin, uint8_t keyCode)
   _keyCode = keyCode;
   _isLedOn = false;
 
-  pinMode(switchPin, INPUT);
+  pinMode(switchPin, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
 
   updateState();
@@ -15,7 +15,7 @@ Button::Button(int switchPin, int ledPin, uint8_t keyCode)
 
 void Button::updateState()
 {
-  _isPressed = digitalRead(_switchPin) == HIGH;
+  _isPressed = digitalRead(_switchPin) == LOW;
 }
 
 bool Button::isPressed()
