@@ -11,7 +11,7 @@
 
 ## Setup Arduino
 
-1. Upload the `hitbox_controller.ino` sketch onto Arduino Mega 2560 (Rev. 3) board.
+1. Upload the `hitbox_controller/hitbox_controller.ino` sketch onto Arduino Mega 2560 (Rev. 3) board.
 1. On Windows, download and install [FLIP](https://www.microchip.com/en-us/development-tool/flip).
 1. Navigate to **Device** > **Select...** and ensure `ATmega16U2` is selected.
 1. Navigate to **Settings** > **Communication** > **USB** and click the **Open** button from the next window.
