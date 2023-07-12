@@ -7,7 +7,6 @@ class Button
 {
 private:
     inline static uint8_t _keyboardBuffer[8] = {0};
-    inline static unsigned long _debounceDelayMs = 50;
 
     int _switchPin;
     int _ledPin;
