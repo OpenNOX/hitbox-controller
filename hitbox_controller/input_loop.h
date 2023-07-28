@@ -1,6 +1,9 @@
 #ifndef __INPUT_LOOP_H__
 #define __INPUT_LOOP_H__
 
+#include "button.h"
+#include "constants.h"
+
 // run input controller mode loop
 void inputLoop(Button *buttons)
 {
@@ -13,9 +16,9 @@ void inputLoop(Button *buttons)
     buttons[RIGHT_BUTTON].processInput(buttons[RIGHT_BUTTON].isPressed() && !buttons[LEFT_BUTTON].isPressed());
 
     // handle remaining button inputs
-    for (int i = A_BUTTON; i <= EXTRA_3_BUTTON; i++)
+    for (int buttonIndex = A_BUTTON; buttonIndex <= EXTRA_3_BUTTON; buttonIndex++)
     {
-        buttons[i].processInput(buttons[i].isPressed());
+        buttons[buttonIndex].processInput(buttons[buttonIndex].isPressed());
     }
 }
 
